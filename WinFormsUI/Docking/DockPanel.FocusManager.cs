@@ -40,94 +40,97 @@ namespace WeifenLuo.WinFormsUI.Docking
                 public IntPtr lParam;
             }
 
-            private class LocalWindowsHook : IDisposable
-            {
-                // Internal properties
-                private IntPtr m_hHook = IntPtr.Zero;
-                private NativeMethods.HookProc m_filterFunc = null;
-                private Win32.HookType m_hookType;
+            //private class LocalWindowsHook : IDisposable
+            //{
+            //    // Internal properties
+            //    private IntPtr m_hHook = IntPtr.Zero;
+            //    private NativeMethods.HookProc m_filterFunc = null;
+            //    private Win32.HookType m_hookType;
 
-                // Event delegate
-                public delegate void HookEventHandler(object sender, HookEventArgs e);
+            //    // Event delegate
+            //    public delegate void HookEventHandler(object sender, HookEventArgs e);
 
-                // Event: HookInvoked 
-                public event HookEventHandler HookInvoked;
-                protected void OnHookInvoked(HookEventArgs e)
-                {
-                    if (HookInvoked != null)
-                        HookInvoked(this, e);
-                }
+            //    // Event: HookInvoked 
+            //    public event HookEventHandler HookInvoked;
+            //    protected void OnHookInvoked(HookEventArgs e)
+            //    {
+            //        if (HookInvoked != null)
+            //            HookInvoked(this, e);
+            //    }
 
-                public LocalWindowsHook(Win32.HookType hook)
-                {
-                    m_hookType = hook;
-                    m_filterFunc = new NativeMethods.HookProc(this.CoreHookProc);
-                }
+            //    public LocalWindowsHook(Win32.HookType hook)
+            //    {
+            //        m_hookType = hook;
+            //        m_filterFunc = new NativeMethods.HookProc(this.CoreHookProc);
+            //    }
 
-                // Default filter function
-                public IntPtr CoreHookProc(int code, IntPtr wParam, IntPtr lParam)
-                {
-                    if (code < 0)
-                        return NativeMethods.CallNextHookEx(m_hHook, code, wParam, lParam);
+            //    // Default filter function
+            //    public IntPtr CoreHookProc(int code, IntPtr wParam, IntPtr lParam)
+            //    {
+            //        if (code < 0)
+            //            return NativeMethods.CallNextHookEx(m_hHook, code, wParam, lParam);
 
-                    // Let clients determine what to do
-                    HookEventArgs e = new HookEventArgs();
-                    e.HookCode = code;
-                    e.wParam = wParam;
-                    e.lParam = lParam;
-                    OnHookInvoked(e);
+            //        // Let clients determine what to do
+            //        HookEventArgs e = new HookEventArgs();
+            //        e.HookCode = code;
+            //        e.wParam = wParam;
+            //        e.lParam = lParam;
+            //        OnHookInvoked(e);
 
-                    // Yield to the next hook in the chain
-                    return NativeMethods.CallNextHookEx(m_hHook, code, wParam, lParam);
-                }
+            //        // Yield to the next hook in the chain
+            //        return NativeMethods.CallNextHookEx(m_hHook, code, wParam, lParam);
+            //    }
 
-                // Install the hook
-                public void Install()
-                {
-                    if (m_hHook != IntPtr.Zero)
-                        Uninstall();
+            //    // Install the hook
+            //    public void Install()
+            //    {
+            //        if (m_hHook != IntPtr.Zero)
+            //            Uninstall();
 
-                    int threadId = NativeMethods.GetCurrentThreadId();
-                    m_hHook = NativeMethods.SetWindowsHookEx(m_hookType, m_filterFunc, IntPtr.Zero, threadId);
-                }
+                    //int threadId = NativeMethods.GetCurrentThreadId();
+                    //m_hHook = NativeMethods.SetWindowsHookEx(m_hookType, m_filterFunc, IntPtr.Zero, threadId);
+            //    }
 
-                // Uninstall the hook
-                public void Uninstall()
-                {
-                    if (m_hHook != IntPtr.Zero)
-                    {
-                        NativeMethods.UnhookWindowsHookEx(m_hHook);
-                        m_hHook = IntPtr.Zero;
-                    }
-                }
+            //    // Uninstall the hook
+            //    public void Uninstall()
+            //    {
+            //        if (m_hHook != IntPtr.Zero)
+            //        {
+            //            NativeMethods.UnhookWindowsHookEx(m_hHook);
+            //            m_hHook = IntPtr.Zero;
+            //        }
+            //    }
 
-                ~LocalWindowsHook()
-                {
-                    Dispose(false);
-                }
+            //    ~LocalWindowsHook()
+            //    {
+            //        Dispose(false);
+            //    }
 
-                public void Dispose()
-                {
-                    Dispose(true);
-                    GC.SuppressFinalize(this);
-                }
+            //    public void Dispose()
+            //    {
+            //        Dispose(true);
+            //        GC.SuppressFinalize(this);
+            //    }
 
-                protected virtual void Dispose(bool disposing)
-                {
-                    Uninstall();
-                }
-            }
+            //    protected virtual void Dispose(bool disposing)
+            //    {
+            //        Uninstall();
+            //    }
+            //}
 
-            private LocalWindowsHook m_localWindowsHook;
-            private LocalWindowsHook.HookEventHandler m_hookEventHandler;
+            // TODO: comment
+            //private LocalWindowsHook m_localWindowsHook;
+            //private LocalWindowsHook.HookEventHandler m_hookEventHandler;
 
             public FocusManagerImpl(DockPanel dockPanel)
             {
                 m_dockPanel = dockPanel;
-                m_localWindowsHook = new LocalWindowsHook(Win32.HookType.WH_CALLWNDPROCRET);
-                m_hookEventHandler = new LocalWindowsHook.HookEventHandler(HookEventHandler);
-                m_localWindowsHook.HookInvoked += m_hookEventHandler;
-                m_localWindowsHook.Install();
+                    
+                // TODO: comment
+                //m_localWindowsHook = new LocalWindowsHook(Win32.HookType.WH_CALLWNDPROCRET);
+                //m_hookEventHandler = new LocalWindowsHook.HookEventHandler(HookEventHandler);
+                //m_localWindowsHook.HookInvoked += m_hookEventHandler;
+                //m_localWindowsHook.Install();
             }
 
             private DockPanel m_dockPanel;
@@ -143,7 +146,8 @@ namespace WeifenLuo.WinFormsUI.Docking
                 {
                     if (!m_disposed && disposing)
                     {
-                        m_localWindowsHook.Dispose();
+                        // TODO: comment
+                        //m_localWindowsHook.Dispose();
                         m_disposed = true;
                     }
 
@@ -172,12 +176,18 @@ namespace WeifenLuo.WinFormsUI.Docking
                 if (handler.Form.IsDisposed)
                     return; // Should not reach here, but better than throwing an exception
                 if (ContentContains(content, handler.ActiveWindowHandle))
-                    NativeMethods.SetFocus(handler.ActiveWindowHandle);
+                {     
+                    // TODO: comment
+                    //NativeMethods.SetFocus(handler.ActiveWindowHandle);
+                }
                 if (!handler.Form.ContainsFocus)
                 {
                     if (!handler.Form.SelectNextControl(handler.Form.ActiveControl, true, true, true, true))
                         // Since DockContent Form is not selectalbe, use Win32 SetFocus instead
-                        NativeMethods.SetFocus(handler.Form.Handle);
+                    {   
+                        // TODO: comment
+                        //NativeMethods.SetFocus(handler.Form.Handle);
+                    }
                 }
             }
 
@@ -285,7 +295,8 @@ namespace WeifenLuo.WinFormsUI.Docking
             public void SuspendFocusTracking()
             {
                 m_countSuspendFocusTracking++;
-                m_localWindowsHook.HookInvoked -= m_hookEventHandler;
+                // TODO: comment
+                //m_localWindowsHook.HookInvoked -= m_hookEventHandler;
             }
 
             public void ResumeFocusTracking()
@@ -300,7 +311,8 @@ namespace WeifenLuo.WinFormsUI.Docking
                         Activate(ContentActivating);
                         ContentActivating = null;
                     }
-                    m_localWindowsHook.HookInvoked += m_hookEventHandler;
+                    // TODO: comment
+                    //m_localWindowsHook.HookInvoked += m_hookEventHandler;
                     if (!InRefreshActiveWindow)
                         RefreshActiveWindow();
                 }
@@ -390,7 +402,7 @@ namespace WeifenLuo.WinFormsUI.Docking
 
             private void SetActivePane()
             {
-                DockPane value = GetPaneFromHandle(NativeMethods.GetFocus());
+                DockPane value = null;  // TODO: comment// GetPaneFromHandle(NativeMethods.GetFocus());
                 if (m_activePane == value)
                     return;
 
@@ -486,10 +498,11 @@ namespace WeifenLuo.WinFormsUI.Docking
             get { return m_focusManager; }
         }
 
-        internal IContentFocusManager ContentFocusManager
-        {
-            get { return m_focusManager; }
-        }
+        // TODO: comment
+        //internal IContentFocusManager ContentFocusManager
+        //{
+        //    get { return m_focusManager; }
+        //}
 
         internal void SaveFocus()
         {

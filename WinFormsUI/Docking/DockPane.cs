@@ -484,6 +484,7 @@ namespace WeifenLuo.WinFormsUI.Docking
         internal void CloseContent(IDockContent content)
         {
             DockPanel dockPanel = DockPanel;
+            dockPanel.SuspendLayout(true);
 
             if (content == null)
                 return;
@@ -498,7 +499,7 @@ namespace WeifenLuo.WinFormsUI.Docking
                 if (content.DockHandler.HideOnClose)
                 {
                     content.DockHandler.Hide();
-                    NestedDockingStatus.NestedPanes.SwitchPaneWithFirstChild(this);
+				NestedDockingStatus.NestedPanes.Remove(this);
                 }
                 else
                     content.DockHandler.Close();
@@ -911,7 +912,10 @@ namespace WeifenLuo.WinFormsUI.Docking
                 FloatWindow = DockPanel.FloatWindowFactory.CreateFloatWindow(DockPanel, this);
 
             if (contentFocused != null)
-                DockPanel.ContentFocusManager.Activate(contentFocused);
+            {
+                // TODO: comment
+                //DockPanel.ContentFocusManager.Activate(contentFocused);
+            }
 
             ResumeRefreshStateChange(oldContainer, oldDockState);
         }
@@ -1241,8 +1245,6 @@ namespace WeifenLuo.WinFormsUI.Docking
                 FloatWindow.Bounds = floatWindowBounds;
 
             DockState = DockState.Float;
-
-            NestedDockingStatus.NestedPanes.Remove(this);
         }
 
         public void DockTo(DockPane pane, DockStyle dockStyle, int contentIndex)

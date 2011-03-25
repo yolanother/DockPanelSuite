@@ -176,7 +176,8 @@ namespace WeifenLuo.WinFormsUI.Docking
 				if (IsDisposed)
 					return;
 
-				uint result = NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
+                // TODO: comment
+                uint result = 0; //NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
 				if (result == 2 && DockPanel.AllowEndUserDocking && this.AllowEndUserDocking)	// HITTEST_CAPTION
 				{
 					Activate();
@@ -189,7 +190,8 @@ namespace WeifenLuo.WinFormsUI.Docking
 			}
             else if (m.Msg == (int)Win32.Msgs.WM_NCRBUTTONDOWN)
             {
-                uint result = NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
+                uint result = 0;
+                // TODO: comment    //NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
                 if (result == 2)	// HITTEST_CAPTION
                 {
                     DockPane theOnlyPane = (VisibleNestedPanes.Count == 1) ? VisibleNestedPanes[0] : null;
@@ -234,7 +236,8 @@ namespace WeifenLuo.WinFormsUI.Docking
             }
             else if (m.Msg == (int)Win32.Msgs.WM_NCLBUTTONDBLCLK)
             {
-                uint result = NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
+                uint result = 0;                    
+                // TODO: comment //NativeMethods.SendMessage(this.Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, (uint)m.LParam);
                 if (result != 2)	// HITTEST_CAPTION
                 {
                     base.WndProc(ref m);
@@ -314,8 +317,10 @@ namespace WeifenLuo.WinFormsUI.Docking
 
                 Point ptMouse = Control.MousePosition;
                 uint lParam = Win32Helper.MakeLong(ptMouse.X, ptMouse.Y);
-                if (NativeMethods.SendMessage(Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, lParam) == (uint)Win32.HitTest.HTCAPTION)
-                    dockOutline.Show(VisibleNestedPanes[0], -1);
+                //if (NativeMethods.SendMessage(Handle, (int)Win32.Msgs.WM_NCHITTEST, 0, lParam) == (uint)Win32.HitTest.HTCAPTION)
+                //{
+                //    dockOutline.Show(VisibleNestedPanes[0], -1);
+                //}
             }
 		}
 
